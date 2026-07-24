@@ -87,7 +87,7 @@ public class Startup
             app.UseSpaStaticFiles();
         }
 
-        app.UseSwaggerUi(settings =>
+        app.UseSwaggerUi3(settings =>
         {
             settings.Path = "/api";
             settings.DocumentPath = "/api/specification.json";
