@@ -29,7 +29,7 @@ public class UpdateTodoItemDetailCommandHandler : IRequestHandler<UpdateTodoItem
     public async Task<Unit> Handle(UpdateTodoItemDetailCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.TodoItems
-            .FindAsync(new object[] { request.Id }, cancellationToken);
+            .FindAsync([request.Id], cancellationToken);
 
         if (entity == null)
         {
