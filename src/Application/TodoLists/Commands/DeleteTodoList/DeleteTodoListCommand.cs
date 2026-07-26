@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Common.Exceptions;
+using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
@@ -11,14 +11,9 @@ public class DeleteTodoListCommand : IRequest
     public int Id { get; set; }
 }
 
-public class DeleteTodoListCommandHandler : IRequestHandler<DeleteTodoListCommand>
+public class DeleteTodoListCommandHandler(IApplicationDbContext context) : IRequestHandler<DeleteTodoListCommand>
 {
-    private readonly IApplicationDbContext _context;
-
-    public DeleteTodoListCommandHandler(IApplicationDbContext context)
-    {
-        _context = context;
-    }
+    private readonly IApplicationDbContext _context = context;
 
     public async Task<Unit> Handle(DeleteTodoListCommand request, CancellationToken cancellationToken)
     {

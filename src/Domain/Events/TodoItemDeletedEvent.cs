@@ -1,11 +1,6 @@
-﻿namespace CleanArchitecture.Domain.Events;
+namespace CleanArchitecture.Domain.Events;
 
-public class TodoItemDeletedEvent : DomainEvent
+public class TodoItemDeletedEvent(TodoItem item) : DomainEvent
 {
-    public TodoItemDeletedEvent(TodoItem item)
-    {
-        Item = item;
-    }
-
-    public TodoItem Item { get; }
+    public TodoItem Item { get; } = item;
 }

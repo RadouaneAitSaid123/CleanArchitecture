@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities;
@@ -10,23 +10,11 @@ using Microsoft.Extensions.Options;
 
 namespace CleanArchitecture.Infrastructure.Persistence;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions, ICurrentUserService currentUserService, IDomainEventService domainEventService, IDateTime dateTime) : ApiAuthorizationDbContext<ApplicationUser>(options, operationalStoreOptions), IApplicationDbContext
 {
-    private readonly ICurrentUserService _currentUserService;
-    private readonly IDateTime _dateTime;
-    private readonly IDomainEventService _domainEventService;
-
-    public ApplicationDbContext(
-        DbContextOptions<ApplicationDbContext> options,
-        IOptions<OperationalStoreOptions> operationalStoreOptions,
-        ICurrentUserService currentUserService,
-        IDomainEventService domainEventService,
-        IDateTime dateTime) : base(options, operationalStoreOptions)
-    {
-        _currentUserService = currentUserService;
-        _domainEventService = domainEventService;
-        _dateTime = dateTime;
-    }
+    private readonly ICurrentUserService _currentUserService = currentUserService;
+    private readonly IDateTime _dateTime = dateTime;
+    private readonly IDomainEventService _domainEventService = domainEventService;
 
     public DbSet<TodoList> TodoLists => Set<TodoList>();
 

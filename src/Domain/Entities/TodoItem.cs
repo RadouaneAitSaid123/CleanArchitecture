@@ -1,9 +1,7 @@
 ﻿namespace CleanArchitecture.Domain.Entities;
 
-public class TodoItem : AuditableEntity, IHasDomainEvent
+public class TodoItem : BaseAuditableEntity
 {
-    public int Id { get; set; }
-
     public int ListId { get; set; }
 
     public string? Title { get; set; }
@@ -12,17 +10,15 @@ public class TodoItem : AuditableEntity, IHasDomainEvent
 
     public PriorityLevel Priority { get; set; }
 
-    public DateTime? Reminder { get; set; }
-
     private bool _done;
     public bool Done
     {
         get => _done;
         set
         {
-            if (value == true && _done == false)
+            if (value && !_done)
             {
-                DomainEvents.Add(new TodoItemCompletedEvent(this));
+                AddDomainEvent(new TodoItemCompletedEvent(this));
             }
 
             _done = value;
@@ -30,6 +26,4 @@ public class TodoItem : AuditableEntity, IHasDomainEvent
     }
 
     public TodoList List { get; set; } = null!;
-
-    public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
 }

@@ -1,23 +1,10 @@
 namespace CleanArchitecture.Domain.ValueObjects;
 
-public class Colour : ValueObject
+public class Colour(string code) : ValueObject
 {
-    static Colour()
-    {
-    }
-
-    private Colour()
-    {
-    }
-
-    private Colour(string code)
-    {
-        Code = code;
-    }
-
     public static Colour From(string code)
     {
-        var colour = new Colour { Code = code };
+        var colour = new Colour(code);
 
         if (!SupportedColours.Contains(colour))
         {
@@ -27,23 +14,21 @@ public class Colour : ValueObject
         return colour;
     }
 
-    public static Colour White => new("#FFFFFF");
+    public static Colour Red => new("#E05C4D");
 
-    public static Colour Red => new("#FF5733");
+    public static Colour Orange => new("#D98B2B");
 
-    public static Colour Orange => new("#FFC300");
+    public static Colour Green => new("#4CAF50");
 
-    public static Colour Yellow => new("#FFFF66");
+    public static Colour Teal => new("#26A69A");
 
-    public static Colour Green => new("#CCFF99 ");
+    public static Colour Blue => new("#5C6BC0");
 
-    public static Colour Blue => new("#6666FF");
+    public static Colour Purple => new("#AB47BC");
 
-    public static Colour Purple => new("#9966CC");
+    public static Colour Grey => new("#78909C");
 
-    public static Colour Grey => new("#999999");
-
-    public required string Code { get; set; }
+    public string Code { get; private set; } = string.IsNullOrWhiteSpace(code)?"#000000":code;
 
     public static implicit operator string(Colour colour)
     {
@@ -60,15 +45,14 @@ public class Colour : ValueObject
         return Code;
     }
 
-    protected static IEnumerable<Colour> SupportedColours
+    public static IEnumerable<Colour> SupportedColours
     {
         get
         {
-            yield return White;
             yield return Red;
             yield return Orange;
-            yield return Yellow;
             yield return Green;
+            yield return Teal;
             yield return Blue;
             yield return Purple;
             yield return Grey;

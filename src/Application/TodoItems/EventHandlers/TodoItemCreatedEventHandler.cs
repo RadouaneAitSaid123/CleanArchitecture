@@ -1,18 +1,13 @@
-﻿using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Application.TodoItems.EventHandlers;
 
-public class TodoItemCreatedEventHandler : INotificationHandler<DomainEventNotification<TodoItemCreatedEvent>>
+public class TodoItemCreatedEventHandler(ILogger<TodoItemCreatedEventHandler> logger) : INotificationHandler<DomainEventNotification<TodoItemCreatedEvent>>
 {
-    private readonly ILogger<TodoItemCreatedEventHandler> _logger;
-
-    public TodoItemCreatedEventHandler(ILogger<TodoItemCreatedEventHandler> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<TodoItemCreatedEventHandler> _logger = logger;
 
     public Task Handle(DomainEventNotification<TodoItemCreatedEvent> notification, CancellationToken cancellationToken)
     {

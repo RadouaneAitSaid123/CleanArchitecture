@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Common;
 using MediatR;
@@ -6,16 +6,10 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Infrastructure.Services;
 
-public class DomainEventService : IDomainEventService
+public class DomainEventService(ILogger<DomainEventService> logger, IPublisher mediator) : IDomainEventService
 {
-    private readonly ILogger<DomainEventService> _logger;
-    private readonly IPublisher _mediator;
-
-    public DomainEventService(ILogger<DomainEventService> logger, IPublisher mediator)
-    {
-        _logger = logger;
-        _mediator = mediator;
-    }
+    private readonly ILogger<DomainEventService> _logger = logger;
+    private readonly IPublisher _mediator = mediator;
 
     public async Task Publish(DomainEvent domainEvent)
     {

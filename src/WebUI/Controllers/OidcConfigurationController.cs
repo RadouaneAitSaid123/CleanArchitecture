@@ -1,20 +1,14 @@
-﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = true)]
-public class OidcConfigurationController : Controller
+public class OidcConfigurationController(IClientRequestParametersProvider clientRequestParametersProvider, ILogger<OidcConfigurationController> logger) : Controller
 {
-    private readonly ILogger<OidcConfigurationController> logger;
+    private readonly ILogger<OidcConfigurationController> _logger = logger;
 
-    public OidcConfigurationController(IClientRequestParametersProvider clientRequestParametersProvider, ILogger<OidcConfigurationController> _logger)
-    {
-        ClientRequestParametersProvider = clientRequestParametersProvider;
-        logger = _logger;
-    }
-
-    public IClientRequestParametersProvider ClientRequestParametersProvider { get; }
+    public IClientRequestParametersProvider ClientRequestParametersProvider { get; } = clientRequestParametersProvider;
 
     [HttpGet("_configuration/{clientId}")]
     public IActionResult GetClientRequestParameters([FromRoute] string clientId)

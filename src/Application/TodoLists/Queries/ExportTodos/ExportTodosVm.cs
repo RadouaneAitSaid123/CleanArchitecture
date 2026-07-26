@@ -1,17 +1,10 @@
 namespace CleanArchitecture.Application.TodoLists.Queries.ExportTodos;
 
-public class ExportTodosVm
+public class ExportTodosVm(string fileName, string contentType, byte[] content)
 {
-    public ExportTodosVm(string fileName, string contentType, byte[] content)
-    {
-        FileName = fileName;
-        ContentType = contentType;
-        Content = content;
-    }
+    public required string FileName { get; set; } = fileName;
 
-    public required string FileName { get; set; }
+    public required string ContentType { get; set; } = contentType;
 
-    public required string ContentType { get; set; }
-
-    public required byte[] Content { get; set; }
+    public required byte[] Content { get; set; } = content;
 }

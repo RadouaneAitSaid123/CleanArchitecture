@@ -1,30 +1,18 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using CleanArchitecture.Application.Common.Interfaces;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Application.Common.Behaviours;
 
-public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+public class PerformanceBehaviour<TRequest, TResponse>(ILogger<TRequest> logger, IUser user, IIdentityService identityService) : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
 {
-    private readonly Stopwatch _timer;
-    private readonly ILogger<TRequest> _logger;
-    private readonly ICurrentUserService _currentUserService;
-    private readonly IIdentityService _identityService;
+    private readonly Stopwatch _timer = new Stopwatch();
+    private readonly ILogger<TRequest> _logger = logger;
+    private readonly IUser _user = user;
+    private readonly IIdentityService _identityService = identityService;
 
-    public PerformanceBehaviour(
-        ILogger<TRequest> logger,
-        ICurrentUserService currentUserService,
-        IIdentityService identityService)
-    {
-        _timer = new Stopwatch();
-
-        _logger = logger;
-        _currentUserService = currentUserService;
-        _identityService = identityService;
-    }
-
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         _timer.Start();
 
@@ -37,7 +25,7 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         if (elapsedMilliseconds > 500)
         {
             var requestName = typeof(TRequest).Name;
-            var userId = _currentUserService.UserId ?? string.Empty;
+            var userId = _user.Id ?? string.Empty;
             var userName = string.Empty;
 
             if (!string.IsNullOrEmpty(userId))
