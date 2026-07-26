@@ -102,7 +102,7 @@ else
 
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.MapStaticAssets();
 if (!app.Environment.IsDevelopment())
 {
     app.UseSpaStaticFiles();
