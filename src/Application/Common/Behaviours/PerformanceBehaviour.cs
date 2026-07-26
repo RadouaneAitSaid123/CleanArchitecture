@@ -1,28 +1,16 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using CleanArchitecture.Application.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Application.Common.Behaviours;
 
-public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class PerformanceBehaviour<TRequest, TResponse>(ILogger<TRequest> logger, IUser user, IIdentityService identityService) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly Stopwatch _timer;
-    private readonly ILogger<TRequest> _logger;
-    private readonly IUser _user;
-    private readonly IIdentityService _identityService;
-
-    public PerformanceBehaviour(
-        ILogger<TRequest> logger,
-        IUser user,
-        IIdentityService identityService)
-    {
-        _timer = new Stopwatch();
-
-        _logger = logger;
-        _user = user;
-        _identityService = identityService;
-    }
+    private readonly Stopwatch _timer = new Stopwatch();
+    private readonly ILogger<TRequest> _logger = logger;
+    private readonly IUser _user = user;
+    private readonly IIdentityService _identityService = identityService;
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {

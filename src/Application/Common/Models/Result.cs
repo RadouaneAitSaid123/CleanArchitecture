@@ -1,16 +1,10 @@
-﻿namespace CleanArchitecture.Application.Common.Models;
+namespace CleanArchitecture.Application.Common.Models;
 
-public class Result
+public class Result(bool succeeded, IEnumerable<string> errors)
 {
-    internal Result(bool succeeded, IEnumerable<string> errors)
-    {
-        Succeeded = succeeded;
-        Errors = errors.ToArray();
-    }
+    public bool Succeeded { get; set; } = succeeded;
 
-    public bool Succeeded { get; init; }
-
-    public string[] Errors { get; init; }
+    public string[] Errors { get; set; } = errors.ToArray();
 
     public static Result Success()
     {
