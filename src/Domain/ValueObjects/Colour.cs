@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Domain.ValueObjects;
+namespace CleanArchitecture.Domain.ValueObjects;
 
 public class Colour : ValueObject
 {
@@ -43,7 +43,7 @@ public class Colour : ValueObject
 
     public static Colour Grey => new("#999999");
 
-    public string Code { get; private set; } = "#000000";
+    public required string Code { get; set; }
 
     public static implicit operator string(Colour colour)
     {
